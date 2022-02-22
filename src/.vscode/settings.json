@@ -1,0 +1,4 @@
+{
+    "npm.enableRunFromFolder": true,
+    "files.autoSave": "afterDelay"
+}
