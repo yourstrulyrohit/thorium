@@ -1,11 +1,8 @@
-let url = 'https://www.google.com'
+let myN = "http//:www.google.com"
 
-function Welcome(message) {
-    console.log(message)    
+function welcome (message) {
+    console.log(message)
 }
 
-
-
-module.exports.url = url
-module.exports.Welcome = Welcome
-module.exports.printWelcomeMessage = welcome
+module.exports.myN = myN
+module.exports.welcome = welcome
