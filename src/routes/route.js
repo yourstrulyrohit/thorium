@@ -1,42 +1,109 @@
-
-const obj = require('../logger/logger')
-const today = require('../util/helper')
-const textFormatter = require('../validator/formatter')
 const express = require('express');
 const router = express.Router();
-const lodash = require('lodash')
 
-router.get('/test-me', function (req, res) {
-    obj.welcome('Welcome to my application. I am ROHIT KUMAR and a trainee at FunctionUp Thorium cohort.')
-    today.printDate()
-    today.printMonth()
-    today.getBatchInfo()
-    textFormatter.whiteSpaceRemover("   Rohit Kumar     ")
-    textFormatter.changetoLowerCase("roHit kumaaR")
-    textFormatter.changetoUpperCase("rOHit KUmar")
-    res.send('My first ever api!')
+
+
+let players = [
+
+    {
+        "name": "manish",
+        "dob": "1/1/1995",
+        "gender": "male",
+        "city": "jalandhar",
+        "sports": ["swimming"],
+
+        "bookings": [
+
+            {
+                "bookingNumber": 1,
+                "sportId": "",
+                "centerId": "",
+                "type": "private",
+                "slot": '16286598000000',
+                "bookedOn": '31/08/2021',
+                "bookedFor": '01/09/2021'
+            },
+            {
+                "bookingNumber": 2,
+                "sportId": "",
+                "centerId": "",
+                "type": "private",
+                "slot": '16286518000000',
+                "bookedOn": '31/08/2001',
+                "bookedFor": '01/09/2001'
+            }]
+    },
+
+    {
+        "name": "gopal",
+        "dob": "1/09/1995",
+        "gender": "male",
+        "city": "delhi",
+        "sports": [
+            "soccer"
+        ],
+        "bookings": []
+    },
+
+    {
+        "name": "lokesh",
+        "dob": "1/1/1990",
+        "gender": "male",
+        "city": "mumbai",
+        "sports": ["soccer"],
+        "bookings": []
+    },
+]
+
+router.post("/players", (req, res) => {
+
+    let newPlayer = req.body
+    let cnt = 0;
+
+    for (let i = 0 ; i < players.length ; i++) {
+
+        if (players[i]['name'] == newPlayer['name']) {
+            cnt++
+            res.send({ "data": "players", "status": "player already exists" })
+        }
+
+    }
+    if (cnt == 0) {
+        players.push(newPlayer)
+        res.send(players)
+    }
 });
 
-router.get('/hello', function (req, res) {
 
-    let arr = ["jan", "feb", "march", "april", "may", "june", "july", "aug", "sept", "oct", "nov", "dec"]
-    console.log(lodash.chunk(arr, 4));
+router.post("/players/:playerName/bookings/:bookingId", (req, res) => {
 
-    let arr2 = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
-    console.log(lodash.tail(arr2));
+    let playerName = req.params.playerName
+    let bookings = req.body
+    let bookingId = req.params.bookingId
 
-    let first = [9, 7, 6, 5, 4, 8, 5]
-    let second = [7, 5, 6, 4, 12, 13]
-    let third = [9, 8, 6, 5, 4, 12, 11]
-    let fourth = [10, 14, 9, 8, 7, 5, 6]
-    let fifth = [20, 11, 5, 7, 6, 32, 45]
+    let cnt = 0;
+    for (let i = 0; i < players.length; i++) {
 
-    console.log(lodash.union(first, second, third, fourth, fifth));
+        if (players[i]['name'] == playerName) {
+            cnt++
 
-    let pairs = [['horror', 'The Shining'], ['drama', 'Titanic'], ['thriller', 'Shutter Island'], ['fantasy', 'Pans Labyrinth']]
-    console.log(lodash.fromPairs(pairs));
+            if (players[i]['bookings'][i]) {
+                res.send("booking was already processed")
 
-    res.send('hey there i am using lodash')
-})
+            } else {
+                players[i].bookings.push(bookings)
+                res.send(players[i])
+                break;
+            }
+        }
+    }
+
+
+    if (cnt == 0) {
+        res.send({ "data": "players", "status": "something relevant about player not being found" })
+    }
+
+
+});
 
 module.exports = router;
