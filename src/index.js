@@ -4,12 +4,11 @@ const route = require('./routes/route.js');
 const { default: mongoose } = require('mongoose');
 const app = express();
 
-const Gm = require('../src/Middleware/globalmd')
-app.use(Gm.GB)
+// const GM = require('../src/middleware/globalmd')
+// app.use(GM.GB)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 
 mongoose.connect("mongodb+srv://yourstrulyrohit:rohit123@cluster0.6iuya.mongodb.net/rohit98?authSource=admin&replicaSet=atlas-w5j1a7-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true", {
